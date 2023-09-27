@@ -4,6 +4,7 @@ const video = require('../model/Video');
 const addPlaylistController = async(req,res)=>{
     const ID = req.params.id;
     const {playlistId,totalDuration,playlistDone,videos,url}=req.body;
+    console.log(typeof(videos));
     const newplaylist = new playlist({
         id:ID,
         playlistId,
