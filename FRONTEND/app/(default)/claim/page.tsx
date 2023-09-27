@@ -9,6 +9,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import toast, { Toaster } from "react-hot-toast";
+import PieChartWithCenterLabel from "@/components/ui/duratoin-chart";
 
 export default function FeaturesBlocks() {
   const [nftData, setNftData] = useState<any[]>([]);
@@ -86,13 +87,11 @@ export default function FeaturesBlocks() {
           {/* Section header */}
           <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
             <h2 className="h2 mb-4">Your Courses</h2>
-            <p className="text-xl text-gray-600">
-              See all your courses below.
-            </p>
+            <p className="text-xl text-gray-600">See all your courses below.</p>
           </div>
 
           {/* Items */}
-          <div className="max-w-sm mx-auto grid gap-10 md:grid-cols-2 lg:grid-cols-3 items-start md:max-w-2xl lg:max-w-none">
+          <div className="max-w-sm mx-auto grid gap-10 md:grid-cols-2 lg:grid-cols-1 items-start md:max-w-2xl lg:max-w-none">
             {nftData.map((item) => (
               <NftCard nftData={item} key={item.tokenId} setopen={setNft} />
             ))}
@@ -141,31 +140,42 @@ function NftCard({ nftData, setopen }: any) {
 
   console.log(nftData);
   return (
-    <div className="relative flex flex-col items-center p-6 bg-white rounded shadow-xl">
-      <img src={imageUrl} className="w-full aspect-square " onError={({ currentTarget }) => {
-    currentTarget.onerror = null; // prevents looping
-    currentTarget.src="https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930";
-  }}/>
+    <div className="relative flex gap-4 p-6 bg-white rounded-lg shadow-xl">
+      <img
+        src={"https://i.ytimg.com/vi/Je5AM5eGUUY/mqdefault.jpg"}
+        className="w-72 h-auto "
+        onError={({ currentTarget }) => {
+          currentTarget.onerror = null; // prevents looping
+          currentTarget.src =
+            "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930";
+        }}
+      />
       {/* <h4 className="text-xl font-bold leading-snug tracking-tight mb-1 mt-3">
         Your NFT
       </h4> */}
-      <p className="text-gray-600 text-ellipsis whitespace-nowrap overflow-hidden w-full mt-2">
-        NFT Address: {nftData.tokenId}
-      </p>
-      <div className="w-full">
-        {nftData.claimed ? (
-          <div className="p-1 px-8 text-white bg-blue-600 hover:bg-blue-700 mt-2 rounded-md text-sm inline-block">
-            Already Claimed
-          </div>
-        ) : (
-          <button
-            onClick={() => setopen(nftData.tokenId)}
-            className="p-1 px-8 text-white bg-blue-600 hover:bg-blue-700 mt-2 rounded-md text-sm"
-          >
-            Claim
-          </button>
-        )}
+      <div>
+        <PieChartWithCenterLabel />
+      </div>
+      <div>
+        <p className="text-gray-600 text-ellipsis whitespace-nowrap overflow-hidden w-full mt-0">
+          NFT Address: {nftData.tokenId}
+        </p>
+        <div className="w-full">
+          {nftData.claimed ? (
+            <div className="p-1 px-8 text-white bg-blue-600 hover:bg-blue-700 mt-2 rounded-md text-sm inline-block">
+              Already Claimed
+            </div>
+          ) : (
+            <button
+              onClick={() => setopen(nftData.tokenId)}
+              className="p-1 px-8 text-white bg-blue-600 hover:bg-blue-700 mt-2 rounded-md text-sm"
+            >
+              Claim
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
 }
+
