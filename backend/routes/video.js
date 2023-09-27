@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const {getVideoController,getPlaylistController} = require('../controller/video')
+const {getVideoController, addVideoController} = require('../controller/video')
 router
-    .get('/',getVideoController)
-    .get('/playlist/:id',getPlaylistController)
+    .post('/:id',addVideoController)
+    .get('/:id',getVideoController)
 
 module.exports = router;
