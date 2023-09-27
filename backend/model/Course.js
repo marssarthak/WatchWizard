@@ -10,8 +10,8 @@ const courseItemSchema = new mongoose.Schema({
         type: Date,
         default: Date.now 
     },
-    video_id: String,
-    playlist_id: String
+    video_id: [String],
+    playlist_id: [String]
 });
 
 const courseSchema = new mongoose.Schema({
