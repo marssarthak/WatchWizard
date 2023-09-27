@@ -7,12 +7,13 @@ const API_KEY = process.env.API_KEY;
 //Create
 const addVideoController = async (req,res)=>{
     const ID = req.params.id;
-    const {videoId,thumbnail,total_duration,url,playlistId} = req.body;
+    const {videoId,thumbnail,total_duration,progress,url,playlistId} = req.body;
     const newvideo = new video({
         id: ID,
         videoId,
         thumbnail,
         total_duration,
+        progress,
         url,
         completed:false,
         playlistId
@@ -38,6 +39,21 @@ const getVideoController = async (req,res)=>{
 }
 
 //Udpate
+const updateVideoController = async (req,res)=>{
+    let updatedData = req.body.progress;
+    let videoID = req.params.videoid;
+    try{
+        const updatedUser = await video.findOneAndUpdate(
+            { videoId:videoID }, 
+            { progress:updatedData }, 
+            { new: true } 
+        );
+        res.json({
+            message:"Done"
+        })
+    }catch(e){
+        console.log(e);
+    }
+}
 
-
-module.exports = {getVideoController,addVideoController};
+module.exports = {getVideoController,addVideoController,updateVideoController};

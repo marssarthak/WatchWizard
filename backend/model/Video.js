@@ -7,10 +7,14 @@ const videoSchema = new mongoose.Schema({
     },
     videoId:{
         type:String,
+        unique:true,
     },
     thumbnail:String,
     total_duration: Number,
-    progress:Number,
+    progress:{
+        type:Number,
+        default:0
+    },
     url:String,
     completed:Boolean,
     playlistId:String

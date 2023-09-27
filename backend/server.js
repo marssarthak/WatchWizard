@@ -6,6 +6,7 @@ const app = express();
 const userRouter = require('./routes/user')
 const courseRouter = require('./routes/course')
 const videoRouter = require('./routes/video')
+const playlistRouter = require('./routes/playlist')
 // const playlistRouter = require('./routes/playlist')
 
 dotenv.config();
@@ -30,7 +31,7 @@ app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 
 // Routes
-// app.use('/playlist',playlistRouter);
+app.use('/playlist',playlistRouter);
 app.use('/course',courseRouter);
 app.use('/video',videoRouter);
 app.use('/user',userRouter);
