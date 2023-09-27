@@ -1,8 +1,9 @@
-const {user} = require('../model/User');
+const user = require('../model/User');
 
 const addUserController = async(req,res)=>{
+    const email = req.body.email;
     const data = new user({
-        userName:req.body.email
+        userName:email
     })
     await data.save();
     res.status(200).send("User created");
@@ -10,7 +11,8 @@ const addUserController = async(req,res)=>{
 
 const getUserController = async(req,res)=>{
     const users = await user.find({userName:req.body.email});
-    res.json(users._id);
+    const idString = users[0]._id.toString();
+    res.json({id:idString});
 }
 
 
