@@ -2,90 +2,26 @@
 import axios from "axios";
 import { useUser } from "@clerk/nextjs";
 import * as React from "react";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import toast, { Toaster } from "react-hot-toast";
+import { getPlaylistDetails, getVideoDetails } from "./helper";
+import { useBoolean } from "usehooks-ts";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const BASE_URL = "https://mint-my-words.onrender.com/users/";
 
 export default function FeaturesBlocks() {
   const { isLoaded, isSignedIn, user } = useUser();
-  const [contentType, setContentType] = React.useState<string>("");
   const [imagePrompt, setimagePrompt] = React.useState<string>("");
-  const [loading, setLoading] = React.useState(false);
-  const handleChange = (event: SelectChangeEvent<typeof contentType>) => {
-    setContentType(event.target.value);
-  };
+  const [courseTitle, setCourseTitle] = React.useState<string>("");
+  const [error, setError] = React.useState<string | null>(null);
 
-  const [error, setError] = React.useState<string | null>(null)
+  const { value: loading, setValue: setLoading } = useBoolean();
+  const { value: videoLoading, setValue: setvideoLoading } = useBoolean();
 
-
-
-  async function mintNft() {
-    if (!contentType) {
-      toast.error("Choose Image type");
-      return false;
-    }
-    if (!imagePrompt) {
-      toast.error("Enter Image Prompt");
-      return false;
-    }
-
-    if (!user?.primaryEmailAddress?.emailAddress) {
-      toast.error("You are not logged in. Login to continue");
-      return false;
-    }
-    if (!user?.fullName) {
-      toast.error("Your Name is not given in your Gmail.");
-      return false;
-    }
-
-    const profileName = user.fullName;
-    const profileEmail = user?.primaryEmailAddress?.emailAddress;
-
-    try {
-      setLoading(true);
-
-      await mintNFTSimulator(
-        profileName,
-        profileEmail,
-        imagePrompt,
-        contentType
-      );
-      setLoading(false);
-      toast.success(
-        "success! You will receive NFT on yoru mail within a minute"
-      );
-    } catch (error: any) {
-      setLoading(false);
-      toast.error("Error: " + error.message);
-      console.log(error);
-    }
-  }
-
-  async function mintNFTSimulator(
-    name: string,
-    email: string,
-    prompt: string,
-    type: string
-  ) {
-    try {
-      const user = await checkUserExistence(name, email);
-      console.log("user", user);
-      // if (type === "ai") {
-      //   const nft = await mintAINft(email, prompt);
-      //   console.log("minted ai nft", nft);
-      // } else {
-      //   const nft = await mintBannerNFT(email, prompt);
-      //   console.log("minted banner nft", nft);
-      // }
-    } catch (error) {
-      throw error;
-    }
-  }
+  const [videoData, setVideoData] = React.useState<{ type: string; data: any }>(
+    { type: "", data: null }
+  );
 
   async function checkUserExistence(name: string, email: string) {
     try {
@@ -112,7 +48,6 @@ export default function FeaturesBlocks() {
     }
   }
 
-
   function extractYouTubeId(url: string) {
     const videoUrlPattern =
       /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
@@ -133,15 +68,47 @@ export default function FeaturesBlocks() {
     }
   }
 
+  async function handleSubmit() {}
+
   React.useEffect(() => {
-    setError(null)
+    setError(null);
+    setVideoData({
+      type: "",
+      data: null,
+    });
 
     const result = extractYouTubeId(imagePrompt);
 
     if (result) {
       console.log(`Type: ${result.type}, ID: ${result.id}`);
+      if (result.type === "video") {
+        setvideoLoading(true);
+        getVideoDetails(result.id)
+          .then((data) => {
+            setVideoData({
+              type: result.type,
+              data: data,
+            });
+            console.log(data);
+          })
+          .finally(() => {
+            setvideoLoading(false);
+          });
+      } else {
+        setvideoLoading(true);
+        getPlaylistDetails(result.id)
+          .then((data) => {
+            setVideoData({
+              type: result.type,
+              data: data,
+            });
+          })
+          .finally(() => {
+            setvideoLoading(false);
+          });
+      }
     } else {
-      if (imagePrompt) setError("Invalid YouTube URL")
+      if (imagePrompt) setError("Invalid YouTube URL");
     }
   }, [imagePrompt]);
 
@@ -157,8 +124,13 @@ export default function FeaturesBlocks() {
           </div>
 
           <div className="max-w-xl mx-auto pb-12 md:pb-20">
-
-
+            <TextField
+              label={`Course Title`}
+              fullWidth
+              value={courseTitle}
+              onChange={(e) => setCourseTitle(e.target.value)}
+              sx={{ marginTop: 2 }}
+            />
             <TextField
               id="outlined-textarea"
               label={`Paste your youtube video or playlist link here`}
@@ -169,15 +141,39 @@ export default function FeaturesBlocks() {
               error={!!error}
               helperText={error ? error : undefined}
             />
+
+            {videoLoading ? (
+              <div className="pt-5 flex items-center justify-center ">
+                <CircularProgress sx={{ width: "12px", height: "12px" }} />
+              </div>
+            ) : null}
+
+            {videoData.data ? (
+              <div className="pt-5">
+                <div className="mb-2">
+                  <p>
+                    {videoData.data.title} ({videoData.data.duration})
+                  </p>
+                </div>
+                <div className="w-full">
+                  <img
+                    src={videoData.data.thumbnail}
+                    className="w-full h-auto"
+                  />
+                </div>
+              </div>
+            ) : null}
+
             <div className="mt-8 w-full flex justify-center items-center">
               <button
-                onClick={mintNft}
+                onClick={handleSubmit}
                 disabled={loading}
                 className="py-4 px-10 mx-auto text-white bg-blue-600 hover:bg-blue-700  rounded-md text-sm disabled:opacity-60"
               >
                 Start Course
               </button>
             </div>
+            {/* <iframe width="560" height="315" src="https://www.youtube.com/embed/2JQn9QxU1-s?si=1lsYrkpHwYmhJ1KJ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> */}
           </div>
         </div>
       </div>
