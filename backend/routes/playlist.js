@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
+const {getPlaylistController,addPlaylistController,updatePlaylistController} = require('../controller/playlist');
+ 
 router
-    .get('/',getPlaylistController)
-    .post('/',addPlaylistController)
-    .put('/',updatePlaylistController)
+    .get('/:id',getPlaylistController)
+    .post('/:id',addPlaylistController)
+    .patch('/:id/:playlistId',updatePlaylistController)
 
 module.exports = router;
