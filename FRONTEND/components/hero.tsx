@@ -91,7 +91,7 @@ export default function Hero() {
                                         className="btn text-white bg-gray-900 hover:bg-gray-800 w-full sm:w-auto sm:ml-4"
                                         href="/claim"
                                     >
-                                        Claim NFTs
+                                        My Courses
                                     </Link>
                                 </div>
                             </div>
