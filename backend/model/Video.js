@@ -17,7 +17,14 @@ const videoSchema = new mongoose.Schema({
     },
     url:String,
     completed:Boolean,
-    playlistId:String
+    playlistId:String,
+    // quiz:[{
+    //     ques:{
+    //       type:String,
+    //       unique:true
+    //     },
+    //     ans: String
+    //   }]
 })
 
 const video = mongoose.model('video',videoSchema)

@@ -4,20 +4,36 @@ const video = require('../model/Video')
 dotenv.config();
 const API_KEY = process.env.API_KEY;
 
+async function fetchPythonMicroservice(link) {
+    try {
+      const response = await axios.post('http://localhost:5000/transcribe', {
+        url: link
+      });
+  
+      return (response.transcript);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
 //Create
 const addVideoController = async (req,res)=>{
     const ID = req.params.id;
+
     const {videoId,thumbnail,total_duration,progress,url,playlistId} = req.body;
+    const transcript = fetchPythonMicroservice(url)
+    console.log(transcript);
     const newvideo = new video({
         id: ID,
         videoId,
         thumbnail,
         total_duration,
         progress,
-        url,
+        url,    
         completed:false,
         playlistId
     })
+
     try{
         await newvideo.save();
         res.send(newvideo);
