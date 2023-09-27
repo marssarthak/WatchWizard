@@ -21,9 +21,13 @@ const videoSchema = new mongoose.Schema({
     // quiz:[{
     //     ques:{
     //       type:String,
-    //       unique:true
+    //       unique:true,
+            // default:""
     //     },
-    //     ans: String
+    //     ans: {
+        // type:String,
+        // default:""
+
     //   }]
 })
 

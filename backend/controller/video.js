@@ -7,7 +7,7 @@ const API_KEY = process.env.API_KEY;
 async function fetchPythonMicroservice(link) {
     try {
       const response = await axios.post('http://localhost:5000/transcribe', {
-        url: link
+        video_url: link
       });
   
       return (response.transcript);

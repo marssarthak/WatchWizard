@@ -10,9 +10,13 @@ const addUserController = async(req,res)=>{
 }
 
 const getUserController = async(req,res)=>{
-    const users = await user.find({userName:req.body.email});
-    const idString = users[0]._id.toString();
-    res.json({id:idString});
+    try{
+        const users = await user.find({userName:req.query.email});
+        const idString = users[0]._id.toString();
+        res.json({id:idString});
+    }catch(e){
+        res.json({id:null});
+    }
 }
 
 
