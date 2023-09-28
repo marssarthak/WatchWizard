@@ -32,14 +32,8 @@ const addVideoController = async(userId, videosArr)=>{
               const response = await axios.post('https://newtrasncribe.onrender.com/transcribe', {
                 video_url: eleUrl
               });
-              try{
-                  const transcript = response.data;
-                  console.log(transcript)
-              }catch(e){
-                    console.log(e)
-              }
-              
-              const prompt = `Generate an array of objects containing a question, options, and the correct answer from this transcript: ${transcript}`;
+            const transcript = response.data;  
+            const prompt = `Generate an array of objects containing a question, options, and the correct answer from this transcript: ${transcript}`;
 
             const openaiResponse = await openai.Completion.create({
                  engine: 'davinci-codex',
