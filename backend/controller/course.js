@@ -48,7 +48,20 @@ const addCourseController = async (req, res) => {
         
     try{
         // Save the new course
-        await newCourse.save();
+        await newCourse.save().then(course => {
+            // Update user profile with new course name
+            return user.findOneAndUpdate(
+              { _id: 'userId' },  // replace 'userId' with the actual user ID
+              { $push: { courses: course.name } },  // assumes 'courses' is an array field in the User schema
+              { new: true, useFindAndModify: false }
+            );
+          })
+          .then(user => {
+            console.log('Updated user:', user);
+          })
+          .catch(err => {
+            console.error('Error:', err);
+          });;
 
         res.status(201).json({ message: 'Course created successfully', course: newCourse });
     } catch (error) {
@@ -60,7 +73,7 @@ const addCourseController = async (req, res) => {
 const getCourseController = async (req,res)=>{
     const userId = req.params.id;
     const User = await user.findById(userId);
-    const courses = await Course.find({ user: User._id });
+    const courses = await Course.find({ user: userId });
     res.json(courses);
 }
 
