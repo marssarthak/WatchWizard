@@ -62,6 +62,7 @@ export default function FeaturesBlocks() {
         videoData.data.duration,
         videoData.data.thumbnail
       );
+      router.push('/courses')
     }
 
     setLoading(false);
@@ -99,8 +100,6 @@ export default function FeaturesBlocks() {
               type: result.type,
               data: data,
             });
-
-            router.push('/courses')
 
             console.log("playlist data", data);
           })
