@@ -7,6 +7,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { getPlaylistDetails, getVideoDetails } from "./helper";
 import { useBoolean } from "usehooks-ts";
 import CircularProgress from "@mui/material/CircularProgress";
+import { addCourse } from "@/functions/apis";
 
 const BASE_URL = "https://mint-my-words.onrender.com/users/";
 
@@ -44,7 +45,13 @@ export default function FeaturesBlocks() {
   }
 
   async function handleSubmit() {
+    const email = user?.primaryEmailAddress?.emailAddress;
 
+    if (!email) return;
+
+    if (videoData.type === "playlist"){
+      await addCourse(email, courseTitle, videoData.data.video_id, videoData.data.videos, videoData.data.duration )
+    }
   }
 
   React.useEffect(() => {

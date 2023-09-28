@@ -21,16 +21,20 @@ export async function createUser(email: string) {
 
 export async function addCourse(
   email: string,
-  name: string,
-  video_id: string[]
+  title: string,
+  video_id: string[],
+  videos: object[],
+  duration: number
 ) {
   try {
     const { id } = await getUserId(email);
     if (!id) return;
 
     const response = await axios.post(ApiRoutes.course + "?id=" + id, {
-      name,
+      title,
       video_id,
+      videos,
+      duration
     });
 
     return response.data;
