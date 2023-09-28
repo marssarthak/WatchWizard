@@ -97,7 +97,8 @@ const getVideosDetailsFromIds = async (videoItems: string[]) => {
       thumbnail,
       title,
       duration,
-      url: "https://www.youtube.com/watch?v=" + item.id
+      url: "https://www.youtube.com/watch?v=" + item.id,
+      videoId: item.id
     }
   });
 
