@@ -89,7 +89,7 @@ export default function Hero() {
                                 <div>
                                     <Link
                                         className="btn text-white bg-gray-900 hover:bg-gray-800 w-full sm:w-auto sm:ml-4"
-                                        href="/claim"
+                                        href="/courses"
                                     >
                                         My Courses
                                     </Link>

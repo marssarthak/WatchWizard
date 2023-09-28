@@ -4,8 +4,8 @@ import { useDrawingArea } from '@mui/x-charts/hooks';
 import { styled } from '@mui/material/styles';
 
 const data = [
-  { label: 'Completed', value: 300, color: '#00C49F' },
-  { label: 'Remaining', value: 200, color: '#FF8042' },
+  { label: 'Completed ', value: 300, color: '#00C49F' },
+  { label: 'Remaining ', value: 200, color: '#FF8042' },
 ];
 
 const size = {
@@ -32,7 +32,7 @@ function PieCenterLabel({ children }: {children: string}) {
 export default function PieChartWithCenterLabel() {
   return (
     <PieChart series={[{ data, innerRadius: 80 }]} {...size}>
-      <PieCenterLabel>percentage completed</PieCenterLabel>
+      <PieCenterLabel>progress</PieCenterLabel>
     </PieChart>
   );
 }
