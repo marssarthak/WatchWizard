@@ -10,7 +10,8 @@ const addVideoController = async(req,res)=>{
     videosArr.forEach(async ele => {
         const newvideo = new video({
             id:userId,
-            courseName:ele.title,
+            title:ele.title,
+            // courseName:ele.course
             videoId:ele.videoid,
             thumbnail:ele.thumbnail,
             total_duration:ele.duration,
