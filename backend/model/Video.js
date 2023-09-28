@@ -5,10 +5,6 @@ const videoSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'User'
     },
-    courseName:{
-        type:String,
-        unique:true
-    },
     videoId:{
         type:String,
         unique:true,
