@@ -26,13 +26,16 @@ const addCourseController = async (req, res) => {
     const userId = req.params.id;
     await addVideoController(userId, req.body.videos);
     
-        const User = await user.findById(userId);
-        // Extract course data from the request body
-        const { thumbnail,title,duration,video_id} = req.body;
-        User.courses.push(title);
+    // Extract course data from the request body
+    const { thumbnail,title,duration,video_id} = req.body;
+    const User = await user.findOneAndUpdate(
+        {
+            _id:userId,
+            $push:{courses:title},
+        });
         // Create a new course object associated with the user
         const newCourse = new Course({
-            user: User._id,
+            user: userId,
             courseItems:[
                 {   
                     thumbnail,
