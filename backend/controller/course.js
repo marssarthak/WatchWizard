@@ -46,7 +46,7 @@ const addVideoController = async(userId, videosArr)=>{
               console.error(error);
             }
           }
-          fetchPythonMicroservice();
+        await fetchPythonMicroservice();
     })
 }
 // POST route to add a new course with course items for a user
