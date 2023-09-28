@@ -11,6 +11,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import toast, { Toaster } from "react-hot-toast";
 import PieChartWithCenterLabel from "@/components/ui/duratoin-chart";
 import { getCourses } from "@/functions/apis";
+import Link from "next/link";
 
 export default function FeaturesBlocks() {
   const [nftData, setNftData] = useState<any[]>([]);
@@ -20,8 +21,6 @@ export default function FeaturesBlocks() {
 
   const [open, setOpen] = useState(false);
   const [nftAddress, setNftAddres] = useState("");
-
-
 
   function setNft(address: string) {
     setNftAddres(address);
@@ -66,8 +65,8 @@ export default function FeaturesBlocks() {
 
   useEffect(() => {
     async function fetchData(email: string) {
-      const newData = await getCourses(email)
-      return newData
+      const newData = await getCourses(email);
+      return newData;
     }
 
     if (user?.primaryEmailAddress?.emailAddress) {
@@ -78,7 +77,6 @@ export default function FeaturesBlocks() {
       if (isLoaded) toast.error("You are not logged in. Login to continue");
     }
   }, [user?.emailAddresses, isLoaded, isSignedIn]);
-
 
   return (
     <section className="relative">
@@ -94,7 +92,11 @@ export default function FeaturesBlocks() {
           {/* Items */}
           <div className="max-w-sm mx-auto grid gap-10 md:grid-cols-2 lg:grid-cols-1 items-start md:max-w-2xl lg:max-w-none">
             {nftData.map((item) => (
-              <NftCard nftData={item.courseItems[0]} key={item.id} setopen={setNft} />
+              <NftCard
+                nftData={item.courseItems[0]}
+                key={item.id}
+                setopen={setNft}
+              />
             ))}
           </div>
         </div>
@@ -152,25 +154,22 @@ function NftCard({ nftData, setopen }: any) {
               "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930";
           }}
         />
-    
+
         <div>
-          <p className="text-gray-600 w-full mt-0">
-          {nftData.title}
-          </p>
+          <p className="text-gray-600 w-full mt-0">{nftData.title}</p>
           <div className="w-full">
-          <button
-                onClick={() => {}}
-                className="p-1 px-8 text-white bg-blue-600 hover:bg-blue-700 mt-2 rounded-md text-sm"
-              >
-                open
-              </button>
+            <Link
+              className="p-1 px-8 text-white bg-blue-600 hover:bg-blue-700 mt-2 rounded-md text-sm"
+              href={{ pathname: "/courses/details", query: { title: nftData.title } }}
+            >
+              open
+            </Link>
           </div>
         </div>
       </div>
       <div className="flex-shrink-0 mr-5">
-        <PieChartWithCenterLabel completed={0} remaining={nftData.duration}/>
+        <PieChartWithCenterLabel completed={0} remaining={nftData.duration} />
       </div>
     </div>
   );
 }
-
