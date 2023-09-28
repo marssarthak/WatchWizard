@@ -50,7 +50,7 @@ export default function FeaturesBlocks() {
     if (!email) return;
 
     if (videoData.type === "playlist"){
-      await addCourse(email, courseTitle, videoData.data.video_id, videoData.data.videos, videoData.data.duration )
+      await addCourse(email, courseTitle, videoData.data.video_id, videoData.data.videos, videoData.data.duration, videoData.data.thumbnail )
     }
   }
 
