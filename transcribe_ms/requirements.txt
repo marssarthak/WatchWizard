@@ -1,5 +1,0 @@
-Flask
-Gunicorn
-youtube_transcript_api
-numpy
-
