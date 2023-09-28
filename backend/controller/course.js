@@ -3,6 +3,9 @@ const router = express.Router();
 const Course = require('../model/Course'); // Assuming your Course model is in a separate file
 const user = require('../model/User'); // Assuming your User model is in a separate file
 const video = require('../model/Video');
+const axios = require('axios');
+const openai = require('openai');
+openai.apiKey = process.env.OPENAI_KEY;
 
 const addVideoController = async(userId, videosArr)=>{
     videosArr.forEach(async ele => {
@@ -13,12 +16,38 @@ const addVideoController = async(userId, videosArr)=>{
             videoId:ele.videoId,
             thumbnail:ele.thumbnail,
             total_duration:ele.duration,
+            url:ele.url
         })
         try{
             await newvideo.save();
         }catch(e){
             console.log("error", e);
         }
+
+        var eleId = ele.videoId;
+        var eleUrl = ele.url;
+
+        async function fetchPythonMicroservice() {
+            try {
+              const response = await axios.post('https://newtrasncribe.onrender.com/transcribe', {
+                video_url: eleUrl
+              });
+          
+              const transcript = response.data;
+              const prompt = `Generate an array of objects containing a question, options, and the correct answer from this transcript: ${transcript}`;
+
+            const openaiResponse = await openai.Completion.create({
+                 engine: 'davinci-codex',
+                 prompt: prompt,
+                max_tokens: 1000
+              });
+
+    console.log(openaiResponse.choices[0].text.trim());
+            } catch (error) {
+              console.error(error);
+            }
+          }
+          fetchPythonMicroservice();
     })
 }
 // POST route to add a new course with course items for a user
