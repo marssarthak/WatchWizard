@@ -24,17 +24,19 @@ export async function addCourse(
   title: string,
   video_id: string[],
   videos: object[],
-  duration: number
+  duration: number,
+  thumbnail: string
 ) {
   try {
     const { id } = await getUserId(email);
     if (!id) return;
 
-    const response = await axios.post(ApiRoutes.course + "?id=" + id, {
+    const response = await axios.post(ApiRoutes.course + "/" + id, {
       title,
       video_id,
       videos,
-      duration
+      duration,
+      thumbnail
     });
 
     return response.data;
