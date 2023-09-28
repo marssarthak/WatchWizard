@@ -10,7 +10,7 @@ const addVideoController = async(userId, videosArr)=>{
             id:userId,
             title:ele.title,
             // courseName:ele.course
-            videoId:ele.videoid,
+            videoId:ele.videoId,
             thumbnail:ele.thumbnail,
             total_duration:ele.duration,
         })
