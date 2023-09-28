@@ -51,7 +51,7 @@ const addCourseController = async (req, res) => {
         await newCourse.save().then(course => {
             // Update user profile with new course name
             return user.findOneAndUpdate(
-              { _id: 'userId' },  // replace 'userId' with the actual user ID
+              { _id: userId },  // replace 'userId' with the actual user ID
               { $push: { courses: course.name } },  // assumes 'courses' is an array field in the User schema
               { new: true, useFindAndModify: false }
             );
