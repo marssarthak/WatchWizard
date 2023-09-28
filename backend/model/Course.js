@@ -6,6 +6,7 @@ const courseItemSchema = new mongoose.Schema({
         required:[true,'Please enter the Course Name'],
         unique:true
     },
+    thumbnail:String,
     duration: Number,
     start_date: {
         type: Date,

@@ -4,9 +4,7 @@ const Course = require('../model/Course'); // Assuming your Course model is in a
 const user = require('../model/User'); // Assuming your User model is in a separate file
 const video = require('../model/Video');
 
-const addVideoController = async(req,res)=>{
-    const userId = req.params.id;
-    const videosArr = req.body.videos;
+const addVideoController = async(userId, videosArr)=>{
     videosArr.forEach(async ele => {
         const newvideo = new video({
             id:userId,
@@ -16,37 +14,42 @@ const addVideoController = async(req,res)=>{
             thumbnail:ele.thumbnail,
             total_duration:ele.duration,
         })
-        await newvideo.save();
+        try{
+            await newvideo.save();
+        }catch(e){
+            console.log("error", e);
+        }
     })
 }
 // POST route to add a new course with course items for a user
 const addCourseController = async (req, res) => {
     const userId = req.params.id;
-    try {
-        const Video = await video.findById()
+    await addVideoController(userId, req.body.videos);
+    
         const User = await user.findById(userId);
         // Extract course data from the request body
-        const { title,duration,video_id} = req.body;
+        const { thumbnail,title,duration,video_id} = req.body;
 
         // Create a new course object associated with the user
         const newCourse = new Course({
             user: User._id,
             courseItems:[
-                {
+                {   
+                    thumbnail,
                     title,
                     duration,
                     video_id,
                 }
             ]
         });
-
+    try{
         // Save the new course
         await newCourse.save();
 
         res.status(201).json({ message: 'Course created successfully', course: newCourse });
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json(error);
     }
 };
 
