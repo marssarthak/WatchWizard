@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
 
 const courseItemSchema = new mongoose.Schema({
-    name: {
+    title: {
         type:String,
         required:[true,'Please enter the Course Name'],
         unique:true
     },
+    duration: Number,
     start_date: {
         type: Date,
         default: Date.now 

@@ -21,7 +21,10 @@ const videoSchema = new mongoose.Schema({
         default:0
     },
     url:String,
-    completed:Boolean,
+    completed:{
+        type:Boolean,
+        default :false
+    }
     // quiz:[{
     //     ques:{
     //       type:String,

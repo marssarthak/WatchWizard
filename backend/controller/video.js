@@ -8,40 +8,16 @@ const API_KEY = process.env.API_KEY;
 
 async function fetchPythonMicroservice(link) {
     try {
-      const response = await axios.post('http://127.0.0.1:5000/transcribe', {
+      const response = await axios.post('https://transcribe-ms-ybvd.onrender.com/transcribe', {
         video_url: link
       });
   
-      return (response.transcript);
+      return (response);
     } catch (error) {
       console.error(error);
     }
   }
   
-//Create
-const addVideoController = async (req,res)=>{
-    const ID = req.params.id;
-
-    const {videoId,thumbnail,total_duration,progress,url,playlistId} = req.body;
-    const transcript = fetchPythonMicroservice(url)
-    console.log(transcript);
-    const newvideo = new video({
-        id: ID,
-        videoId,
-        thumbnail,
-        total_duration,
-        progress,
-        url,    
-        completed:false,
-    })
-
-    try{
-        await newvideo.save();
-        res.send(newvideo);
-    }catch(e){
-        res.send(e);
-    }
-}
 
 //Read
 const getVideoController = async (req,res)=>{
@@ -73,4 +49,4 @@ const updateVideoController = async (req,res)=>{
     }
 }
 
-module.exports = {getVideoController,addVideoController,updateVideoController};
+module.exports = {getVideoController,updateVideoController};
