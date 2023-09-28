@@ -140,40 +140,40 @@ function NftCard({ nftData, setopen }: any) {
 
   console.log(nftData);
   return (
-    <div className="relative flex gap-4 p-6 bg-white rounded-lg shadow-xl">
-      <img
-        src={"https://i.ytimg.com/vi/Je5AM5eGUUY/mqdefault.jpg"}
-        className="w-72 h-auto "
-        onError={({ currentTarget }) => {
-          currentTarget.onerror = null; // prevents looping
-          currentTarget.src =
-            "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930";
-        }}
-      />
-      {/* <h4 className="text-xl font-bold leading-snug tracking-tight mb-1 mt-3">
-        Your NFT
-      </h4> */}
-      <div>
-        <PieChartWithCenterLabel />
-      </div>
-      <div>
-        <p className="text-gray-600 text-ellipsis whitespace-nowrap overflow-hidden w-full mt-0">
-          NFT Address: {nftData.tokenId}
-        </p>
-        <div className="w-full">
-          {nftData.claimed ? (
-            <div className="p-1 px-8 text-white bg-blue-600 hover:bg-blue-700 mt-2 rounded-md text-sm inline-block">
-              Already Claimed
-            </div>
-          ) : (
-            <button
-              onClick={() => setopen(nftData.tokenId)}
-              className="p-1 px-8 text-white bg-blue-600 hover:bg-blue-700 mt-2 rounded-md text-sm"
-            >
-              Claim
-            </button>
-          )}
+    <div className="relative flex gap-4 justify-between p-6 bg-white rounded-lg shadow-xl">
+      <div className="flex gap-4">
+        <img
+          src={"https://i.ytimg.com/vi/Je5AM5eGUUY/mqdefault.jpg"}
+          className="w-72 h-auto "
+          onError={({ currentTarget }) => {
+            currentTarget.onerror = null; // prevents looping
+            currentTarget.src =
+              "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930";
+          }}
+        />
+    
+        <div>
+          <p className="text-gray-600 w-full mt-0">
+            NFT Address: {nftData.tokenId}
+          </p>
+          <div className="w-full">
+            {nftData.claimed ? (
+              <div className="p-1 px-8 text-white bg-blue-600 hover:bg-blue-700 mt-2 rounded-md text-sm inline-block">
+                Already Claimed
+              </div>
+            ) : (
+              <button
+                onClick={() => setopen(nftData.tokenId)}
+                className="p-1 px-8 text-white bg-blue-600 hover:bg-blue-700 mt-2 rounded-md text-sm"
+              >
+                Claim
+              </button>
+            )}
+          </div>
         </div>
+      </div>
+      <div className="flex-shrink-0 mr-5">
+        <PieChartWithCenterLabel />
       </div>
     </div>
   );

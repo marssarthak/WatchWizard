@@ -45,13 +45,22 @@ export default function FeaturesBlocks() {
   }
 
   async function handleSubmit() {
+    setLoading(true);
     const email = user?.primaryEmailAddress?.emailAddress;
 
     if (!email) return;
-
-    if (videoData.type === "playlist"){
-      await addCourse(email, courseTitle, videoData.data.video_id, videoData.data.videos, videoData.data.duration, videoData.data.thumbnail )
+    if (videoData.type === "playlist") {
+      await addCourse(
+        email,
+        courseTitle,
+        videoData.data.video_id,
+        videoData.data.videos,
+        videoData.data.duration,
+        videoData.data.thumbnail
+      );
     }
+
+    setLoading(false);
   }
 
   React.useEffect(() => {
@@ -87,7 +96,7 @@ export default function FeaturesBlocks() {
               data: data,
             });
 
-            console.log("playlist data", data)
+            console.log("playlist data", data);
           })
           .finally(() => {
             setvideoLoading(false);
