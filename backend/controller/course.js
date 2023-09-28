@@ -32,8 +32,13 @@ const addVideoController = async(userId, videosArr)=>{
               const response = await axios.post('https://newtrasncribe.onrender.com/transcribe', {
                 video_url: eleUrl
               });
-          
-              const transcript = response.data;
+              try{
+                  const transcript = response.data;
+                  console.log(transcript)
+              }catch(e){
+                    console.log(e)
+              }
+              
               const prompt = `Generate an array of objects containing a question, options, and the correct answer from this transcript: ${transcript}`;
 
             const openaiResponse = await openai.Completion.create({
@@ -42,7 +47,7 @@ const addVideoController = async(userId, videosArr)=>{
                 max_tokens: 1000
               });
 
-    console.log(openaiResponse.choices[0].text.trim());
+            console.log(openaiResponse.choices[0].text.trim());
             } catch (error) {
               console.error(error);
             }
