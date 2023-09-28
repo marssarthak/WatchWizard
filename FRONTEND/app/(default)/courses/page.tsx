@@ -10,6 +10,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import toast, { Toaster } from "react-hot-toast";
 import PieChartWithCenterLabel from "@/components/ui/duratoin-chart";
+import { getCourses } from "@/functions/apis";
 
 export default function FeaturesBlocks() {
   const [nftData, setNftData] = useState<any[]>([]);
@@ -19,6 +20,8 @@ export default function FeaturesBlocks() {
 
   const [open, setOpen] = useState(false);
   const [nftAddress, setNftAddres] = useState("");
+
+
 
   function setNft(address: string) {
     setNftAddres(address);
@@ -63,10 +66,8 @@ export default function FeaturesBlocks() {
 
   useEffect(() => {
     async function fetchData(email: string) {
-      const response = await axios.get(
-        "https://mint-my-words.onrender.com/users/fetchnft/" + email
-      );
-      return response.data;
+      const newData = await getCourses(email)
+      return newData
     }
 
     if (user?.primaryEmailAddress?.emailAddress) {
@@ -76,9 +77,9 @@ export default function FeaturesBlocks() {
     } else {
       if (isLoaded) toast.error("You are not logged in. Login to continue");
     }
-  }, [user?.emailAddresses]);
+  }, [user?.emailAddresses, isLoaded, isSignedIn]);
 
-  console.log(nftData);
+
   return (
     <section className="relative">
       <div className="absolute left-0 right-0 bottom-0 m-auto w-px p-px h-20 bg-gray-200 transform translate-y-1/2"></div>
@@ -93,7 +94,7 @@ export default function FeaturesBlocks() {
           {/* Items */}
           <div className="max-w-sm mx-auto grid gap-10 md:grid-cols-2 lg:grid-cols-1 items-start md:max-w-2xl lg:max-w-none">
             {nftData.map((item) => (
-              <NftCard nftData={item} key={item.tokenId} setopen={setNft} />
+              <NftCard nftData={item.courseItems[0]} key={item.id} setopen={setNft} />
             ))}
           </div>
         </div>
@@ -131,8 +132,8 @@ export default function FeaturesBlocks() {
 function NftCard({ nftData, setopen }: any) {
   let imageUrl = "";
 
-  if (nftData.imageUrl) {
-    imageUrl = nftData.imageUrl;
+  if (nftData.thumbnail) {
+    imageUrl = nftData.thumbnail;
   } else {
     imageUrl =
       "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930";
@@ -141,10 +142,10 @@ function NftCard({ nftData, setopen }: any) {
   console.log(nftData);
   return (
     <div className="relative flex gap-4 justify-between p-6 bg-white rounded-lg shadow-xl">
-      <div className="flex gap-4">
+      <div className="flex gap-4 items-start">
         <img
-          src={"https://i.ytimg.com/vi/Je5AM5eGUUY/mqdefault.jpg"}
-          className="w-72 h-auto "
+          src={imageUrl}
+          className="w-72 h-auto"
           onError={({ currentTarget }) => {
             currentTarget.onerror = null; // prevents looping
             currentTarget.src =
@@ -154,26 +155,20 @@ function NftCard({ nftData, setopen }: any) {
     
         <div>
           <p className="text-gray-600 w-full mt-0">
-            NFT Address: {nftData.tokenId}
+          {nftData.title}
           </p>
           <div className="w-full">
-            {nftData.claimed ? (
-              <div className="p-1 px-8 text-white bg-blue-600 hover:bg-blue-700 mt-2 rounded-md text-sm inline-block">
-                Already Claimed
-              </div>
-            ) : (
-              <button
-                onClick={() => setopen(nftData.tokenId)}
+          <button
+                onClick={() => {}}
                 className="p-1 px-8 text-white bg-blue-600 hover:bg-blue-700 mt-2 rounded-md text-sm"
               >
-                Claim
+                open
               </button>
-            )}
           </div>
         </div>
       </div>
       <div className="flex-shrink-0 mr-5">
-        <PieChartWithCenterLabel />
+        <PieChartWithCenterLabel completed={0} remaining={nftData.duration}/>
       </div>
     </div>
   );

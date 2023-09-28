@@ -36,8 +36,23 @@ export async function addCourse(
       video_id,
       videos,
       duration,
-      thumbnail
+      thumbnail,
     });
+
+    return response.data;
+  } catch (e: any) {
+    if (e.message) {
+      toast.error(e.message);
+    }
+  }
+}
+
+export async function getCourses(email: string) {
+  try {
+    const { id } = await getUserId(email);
+    if (!id) return;
+
+    const response = await axios.get(ApiRoutes.course + "/" + id);
 
     return response.data;
   } catch (e: any) {

@@ -8,6 +8,8 @@ import { getPlaylistDetails, getVideoDetails } from "./helper";
 import { useBoolean } from "usehooks-ts";
 import CircularProgress from "@mui/material/CircularProgress";
 import { addCourse } from "@/functions/apis";
+import { useRouter } from 'next/navigation'
+
 
 const BASE_URL = "https://mint-my-words.onrender.com/users/";
 
@@ -23,6 +25,8 @@ export default function FeaturesBlocks() {
   const [videoData, setVideoData] = React.useState<{ type: string; data: any }>(
     { type: "", data: null }
   );
+
+    const router = useRouter()
 
   function extractYouTubeId(url: string) {
     const videoUrlPattern =
@@ -95,6 +99,8 @@ export default function FeaturesBlocks() {
               type: result.type,
               data: data,
             });
+
+            router.push('/courses')
 
             console.log("playlist data", data);
           })
