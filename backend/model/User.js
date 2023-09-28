@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
         unique:true,
         required:true
     },
-    courses:[{}]
+    courses:[String]
 })
 
 const user = new mongoose.model('user',userSchema);
