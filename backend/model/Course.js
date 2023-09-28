@@ -3,8 +3,6 @@ const mongoose = require('mongoose');
 const courseItemSchema = new mongoose.Schema({
     title: {
         type:String,
-        required:[true,'Please enter the Course Name'],
-        unique:true
     },
     thumbnail:String,
     duration: Number,
