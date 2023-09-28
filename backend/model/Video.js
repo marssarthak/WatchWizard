@@ -5,10 +5,15 @@ const videoSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'User'
     },
+    courseName:{
+        type:String,
+        unique:true
+    },
     videoId:{
         type:String,
         unique:true,
     },
+    title: String,
     thumbnail:String,
     total_duration: Number,
     progress:{
@@ -17,7 +22,6 @@ const videoSchema = new mongoose.Schema({
     },
     url:String,
     completed:Boolean,
-    playlistId:String,
     // quiz:[{
     //     ques:{
     //       type:String,

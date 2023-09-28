@@ -10,7 +10,7 @@ const addCourseController = async (req, res) => {
     try {
         const User = await user.findById(userId);
         // Extract course data from the request body
-        const { name,video_id,playlist_id} = req.body;
+        const { name,video_id} = req.body;
 
         // Create a new course object associated with the user
         const newCourse = new Course({
@@ -19,7 +19,7 @@ const addCourseController = async (req, res) => {
                 {
                     name,
                     video_id,
-                    playlist_id
+                 
                 }
             ]
         });

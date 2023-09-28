@@ -1,12 +1,14 @@
 const axios = require('axios');
 const dotenv = require('dotenv');
-const video = require('../model/Video')
+const course = require('../model/Course');
+const video = require('../model/Video');
+
 dotenv.config();
 const API_KEY = process.env.API_KEY;
 
 async function fetchPythonMicroservice(link) {
     try {
-      const response = await axios.post('http://localhost:5000/transcribe', {
+      const response = await axios.post('http://127.0.0.1:5000/transcribe', {
         video_url: link
       });
   
@@ -31,7 +33,6 @@ const addVideoController = async (req,res)=>{
         progress,
         url,    
         completed:false,
-        playlistId
     })
 
     try{

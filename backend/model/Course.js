@@ -11,7 +11,6 @@ const courseItemSchema = new mongoose.Schema({
         default: Date.now 
     },
     video_id: [String],
-    playlist_id: [String]
 });
 
 const courseSchema = new mongoose.Schema({
