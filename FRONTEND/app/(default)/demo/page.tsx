@@ -7,6 +7,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { getPlaylistDetails, getVideoDetails } from "./helper";
 import { useBoolean } from "usehooks-ts";
 import CircularProgress from "@mui/material/CircularProgress";
+import { addCourse } from "@/functions/apis";
 
 const BASE_URL = "https://mint-my-words.onrender.com/users/";
 
@@ -22,31 +23,6 @@ export default function FeaturesBlocks() {
   const [videoData, setVideoData] = React.useState<{ type: string; data: any }>(
     { type: "", data: null }
   );
-
-  async function checkUserExistence(name: string, email: string) {
-    try {
-      const response = await axios.get(BASE_URL + email);
-      return response.data;
-    } catch (error: any) {
-      if (error.response && error.response.status === 404) {
-        return createUser(name, email);
-      } else {
-        throw error;
-      }
-    }
-  }
-  async function createUser(name: string, email: string) {
-    try {
-      let obj = {
-        name,
-        email,
-      };
-      const response = await axios.post(BASE_URL + "create", obj);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  }
 
   function extractYouTubeId(url: string) {
     const videoUrlPattern =
@@ -68,7 +44,15 @@ export default function FeaturesBlocks() {
     }
   }
 
-  async function handleSubmit() {}
+  async function handleSubmit() {
+    const email = user?.primaryEmailAddress?.emailAddress;
+
+    if (!email) return;
+
+    if (videoData.type === "playlist"){
+      await addCourse(email, courseTitle, videoData.data.video_id, videoData.data.videos, videoData.data.duration )
+    }
+  }
 
   React.useEffect(() => {
     setError(null);
@@ -102,6 +86,8 @@ export default function FeaturesBlocks() {
               type: result.type,
               data: data,
             });
+
+            console.log("playlist data", data)
           })
           .finally(() => {
             setvideoLoading(false);

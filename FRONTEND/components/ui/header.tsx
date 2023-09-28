@@ -12,10 +12,37 @@ import {
   SignedIn,
   SignedOut,
   SignUpButton,
+  useUser,
 } from "@clerk/nextjs";
+import { createUser, getUserId } from "@/functions/apis";
+import toast from "react-hot-toast";
 
 export default function Header() {
   const [top, setTop] = useState<boolean>(true);
+
+  const { isSignedIn, user, isLoaded } = useUser();
+
+  useEffect(() => {
+    try{
+      if (isSignedIn && isLoaded && user?.primaryEmailAddress) {
+        const emailAddress = user?.primaryEmailAddress?.emailAddress;
+        getUserId(emailAddress).then((data) => {
+          console.log(data);
+          if (!data?.id) {
+            createUser(emailAddress).then((response) => {
+              console.log("User created", response);
+            });
+          }
+        });
+      }
+    }
+    catch(e: any){
+      console.error(e)
+      if (e?.message){
+        toast.error(e.message)
+      }
+    }
+  }, [user?.primaryEmailAddress]);
 
   // detect whether user has scrolled the page down by 10px
   const scrollHandler = () => {
